@@ -1,0 +1,23 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build wsa
+        run: |
+          chmod +x ./script/build.sh
+          ./script/build.sh ${{ vars.COMMAND_LINE }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./output/*
